@@ -5,6 +5,11 @@
  */
 package Vista;
 
+import Controlador.Operaciones;
+import Modelo.Numero;
+import java.awt.Color;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author USRVI-LC2
@@ -33,6 +38,7 @@ public class Form_Ventana extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jtxt_num1 = new javax.swing.JTextField();
         jtxt_num2 = new javax.swing.JTextField();
+        jcb_operaciones = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jlbl_resultado = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -53,31 +59,40 @@ public class Form_Ventana extends javax.swing.JFrame {
 
         jLabel4.setText("Número 2:");
 
+        jcb_operaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Operaciones-", "Sumar", "Restar", "Multiplicar", "Dividir" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtxt_num1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jtxt_num2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtxt_num2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtxt_num1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(78, 78, 78)
+                .addComponent(jcb_operaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel4)
                     .addComponent(jtxt_num1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcb_operaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
                     .addComponent(jtxt_num2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 255));
@@ -100,8 +115,8 @@ public class Form_Ventana extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones"));
 
-        jbtn_sumar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/dibujar-sumando-cruz.png"))); // NOI18N
-        jbtn_sumar.setText("Sumar");
+        jbtn_sumar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/calcular.png"))); // NOI18N
+        jbtn_sumar.setText("Calcular");
         jbtn_sumar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtn_sumarActionPerformed(evt);
@@ -110,6 +125,11 @@ public class Form_Ventana extends javax.swing.JFrame {
 
         jbtn_limpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/limpiar.png"))); // NOI18N
         jbtn_limpiar.setText("Limpiar");
+        jbtn_limpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtn_limpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -171,19 +191,63 @@ public class Form_Ventana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtn_sumarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_sumarActionPerformed
-       
+        int num1 = 0;
+        int num2 = 0;
+
         //rescatar los dato del formulario
+        try {
+            num1 = Integer.parseInt(this.jtxt_num1.getText());
+            num2 = Integer.parseInt(this.jtxt_num2.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Datos Inválidos","Validación",0);
+            this.jtxt_num1.setForeground(Color.red);
+            this.jtxt_num2.setForeground(Color.red);
+            this.jtxt_num1.requestFocus();
+            
+        }
         
-        int num1 = Integer.parseInt(this.jtxt_num1.getText());
-        int num2 = Integer.parseInt(this.jtxt_num2.getText());
-        
-        int suma = num1 + num2;
-        
-        String sumaStr = String.valueOf(suma);
-        
-        this.jlbl_resultado.setText(sumaStr);
-        
+        Numero num = new Numero(num1, num2);
+        Operaciones op = new Operaciones();
+
+        switch (this.jcb_operaciones.getSelectedIndex()) {
+            case 1:
+                int suma = op.sumar(num);
+                String sumaStr = String.valueOf(suma);
+                this.jlbl_resultado.setText(sumaStr);
+                break;
+            case 2:
+                int resta = op.restar(num);
+                String restaStr = String.valueOf(resta);
+                this.jlbl_resultado.setText(restaStr);
+                break;
+            case 3:
+                int multi = op.multiplicar(num);
+                String multiStr = String.valueOf(multi);
+                this.jlbl_resultado.setText(multiStr);
+                break;
+            case 4:
+                double div = op.dividir(num);
+                String divStr = String.valueOf(div);
+                this.jlbl_resultado.setText(divStr);
+                break;
+        }
+
+//        int suma = num1 + num2;
+
     }//GEN-LAST:event_jbtn_sumarActionPerformed
+
+    private void jbtn_limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_limpiarActionPerformed
+
+        this.jtxt_num1.setText("");
+        this.jtxt_num2.setText("");
+        this.jlbl_resultado.setText("");
+        this.jcb_operaciones.setSelectedIndex(0);
+        this.jtxt_num1.setForeground(Color.BLACK);
+        this.jtxt_num2.setForeground(Color.black);
+        this.jtxt_num1.requestFocus();
+
+
+    }//GEN-LAST:event_jbtn_limpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,6 +294,7 @@ public class Form_Ventana extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JButton jbtn_limpiar;
     private javax.swing.JButton jbtn_sumar;
+    private javax.swing.JComboBox<String> jcb_operaciones;
     private javax.swing.JLabel jlbl_resultado;
     private javax.swing.JTextField jtxt_num1;
     private javax.swing.JTextField jtxt_num2;
